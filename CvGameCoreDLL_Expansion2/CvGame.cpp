@@ -1447,8 +1447,8 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	CvCityManager::Reset();
 
 #if defined(MOD_BALANCE_CORE_GLOBAL_IDS)
-	m_iGlobalAssetCounterAllPreviousTurns = 1000; //0 is invalid
-	m_iGlobalAssetCounterCurrentTurn = 0;
+	//m_iGlobalAssetCounterAllPreviousTurns = 1000; //0 is invalid
+	//m_iGlobalAssetCounterCurrentTurn = 0;
 #endif
 }
 
@@ -8206,7 +8206,6 @@ void CvGame::doTurn()
 	}
 
 #if defined(MOD_BALANCE_CORE_GLOBAL_IDS)
-	RollOverAssetCounter();
 #endif
 
 	//-------------------------------------------------------------
