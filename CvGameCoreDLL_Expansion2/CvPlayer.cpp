@@ -11180,8 +11180,6 @@ void CvPlayer::doTurn()
 	}
 #endif
 
-	AI_doTurnPost();
-
 	ICvEngineScriptSystem1* pkScriptSystem = gDLL->GetScriptSystem();
 	if(pkScriptSystem)
 	{
@@ -11432,6 +11430,8 @@ void CvPlayer::doTurnPostDiplomacy()
 	GatherPerTurnReplayStats(iGameTurn);
 
 	GC.GetEngineUserInterface()->setDirty(CityInfo_DIRTY_BIT, true);
+	
+	AI_doTurnPost();
 }
 
 //	--------------------------------------------------------------------------------
@@ -33829,12 +33829,12 @@ void CvPlayer::setTurnActive(bool bNewValue, bool bDoTurn) // R: bDoTurn default
 			}
 
 			std::ostringstream infoStream;
-			infoStream << "setTurnActive(true) for player ";
-			infoStream << (int)GetID();	infoStream << " ";
+			infoStream << "setTurnActive() for player ";
+			infoStream << (int)GetID();
+			infoStream << " ";
 			infoStream << getName();
 			kGame.changeNumGameTurnActive(1, infoStream.str());
 			infoStream << std::endl;
-			//if (isMajorCiv() || isBarbarian()) OutputDebugString(infoStream.str().c_str());
 
 			DLLUI->PublishPlayerTurnStatus(DLLUIClass::TURN_START, GetID());
 
@@ -33863,7 +33863,6 @@ void CvPlayer::setTurnActive(bool bNewValue, bool bDoTurn) // R: bDoTurn default
 							GetDiplomacyRequests()->BeginTurn();
 						}
 
-						//this is misleading - actual turn processing now happens in CvGame::updateMoves()
 						doTurn();
 						doTurnUnits();
 					}
@@ -33966,16 +33965,8 @@ void CvPlayer::setTurnActive(bool bNewValue, bool bDoTurn) // R: bDoTurn default
 				DLLUI->PublishActivePlayerTurnEnd();
 			}
 
-			if (!isHuman() || (isHuman() && !isAlive()) || (isHuman() && gDLL->HasReceivedTurnAllComplete(GetID())) || kGame.getAIAutoPlay())
-			{
-				std::ostringstream infoStream;
-				infoStream << "setTurnActive(false) for player ";
-				infoStream << (int)GetID(); infoStream << " ";
-				infoStream << getName();
-				kGame.changeNumGameTurnActive(-1, infoStream.str());
-				infoStream << std::endl;
-				//if (isMajorCiv() || isBarbarian()) OutputDebugString(infoStream.str().c_str());
-			}
+			if(!isHuman() || (isHuman() && !isAlive()) || (isHuman() && gDLL->HasReceivedTurnAllComplete(GetID())) || kGame.getAIAutoPlay())
+				kGame.changeNumGameTurnActive(-1, std::string("setTurnActive() for player ") + getName());
 
 #if defined(MOD_EVENTS_RED_TURN)
 			if (MOD_EVENTS_RED_TURN)

@@ -1560,7 +1560,7 @@ end
 for playerID = 0, GameDefines.MAX_CIV_PLAYERS-1 do
 
 	local player = Players[ playerID ]
-	if player and (player:IsEverAlive() or player:IsPotentiallyAlive()) then
+	if player and (player:IsEverAlive()) then
 		--print( "Setting up civilization ribbon player ID", playerID )
 		local instance = { -playerID, 0, 0, 0 }
 
