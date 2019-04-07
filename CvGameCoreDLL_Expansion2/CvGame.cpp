@@ -10989,8 +10989,6 @@ void CvGame::Read(FDataStream& kStream)
 	kStream >> m_iNukesExploded;
 	kStream >> m_iMaxPopulation;
 #if defined(MOD_BALANCE_CORE_GLOBAL_IDS)
-	kStream >> m_iGlobalAssetCounterAllPreviousTurns;
-	kStream >> m_iGlobalAssetCounterCurrentTurn;
 #endif
 	kStream >> m_iUnused1;
 	kStream >> m_iUnused2;
@@ -11262,8 +11260,6 @@ void CvGame::Write(FDataStream& kStream) const
 	kStream << m_iNukesExploded;
 	kStream << m_iMaxPopulation;
 #if defined(MOD_BALANCE_CORE_GLOBAL_IDS)
-	kStream << m_iGlobalAssetCounterAllPreviousTurns;
-	kStream << m_iGlobalAssetCounterCurrentTurn;
 #endif
 	kStream << m_iUnused1;
 	kStream << m_iUnused2;
