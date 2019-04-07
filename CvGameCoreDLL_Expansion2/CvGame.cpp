@@ -1447,8 +1447,7 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	CvCityManager::Reset();
 
 #if defined(MOD_BALANCE_CORE_GLOBAL_IDS)
-	//m_iGlobalAssetCounterAllPreviousTurns = 1000; //0 is invalid
-	//m_iGlobalAssetCounterCurrentTurn = 0;
+	m_iGlobalAssetCounter = 1000; //0 is invalid
 #endif
 }
 
@@ -10335,7 +10334,7 @@ unsigned long hash32(unsigned long a)
 
 int CvGame::getSmallFakeRandNum(int iNum, const CvPlot& input)
 {
-	unsigned long iState = input.getX()*17 + input.getY()*23 + getGameTurn()*3;
+	unsigned long iState = input.getX()*17 + input.getY()*23 + getGameTurn()*abs(input.getX()-input.getY()) + m_iGlobalAssetCounter;
 	
 	int iResult = 0;
 	if (iNum > 0)
@@ -10988,6 +10987,7 @@ void CvGame::Read(FDataStream& kStream)
 	kStream >> m_iNukesExploded;
 	kStream >> m_iMaxPopulation;
 #if defined(MOD_BALANCE_CORE_GLOBAL_IDS)
+	kStream >> m_iGlobalAssetCounter;
 #endif
 	kStream >> m_iUnused1;
 	kStream >> m_iUnused2;
@@ -11259,6 +11259,7 @@ void CvGame::Write(FDataStream& kStream) const
 	kStream << m_iNukesExploded;
 	kStream << m_iMaxPopulation;
 #if defined(MOD_BALANCE_CORE_GLOBAL_IDS)
+	kStream << m_iGlobalAssetCounter;
 #endif
 	kStream << m_iUnused1;
 	kStream << m_iUnused2;
